@@ -11,13 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('posts', function (Blueprint $table) {
+        Schema::create('notifications', function (Blueprint $table) {
             $table->id();
-            $table->text('content');
-            $table->string('image')->nullable();
-            $table->unsignedInteger('likes_count')->default(0); // Count of likes
-            $table->enum('status',['pending','accepted','rejected']);
+            $table->string('content');
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->boolean('is_read')->default(false);
+            
             $table->timestamps();
         });
     }
@@ -27,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('posts');
+        Schema::dropIfExists('notifications');
     }
 };

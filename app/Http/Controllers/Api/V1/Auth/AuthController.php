@@ -14,13 +14,7 @@ use App\Http\Resources\Api\V1\UserResource;
 
 class AuthController extends Controller
 {
-    protected $helper;
-
-    // public function __construct(Helper $helper)
-    // {
-    //     $this->helper = $helper;
-    // }
-
+ 
     public function register(StoreRegisterRequest $request)
     {
         $validatedData = $request->validated();
@@ -35,7 +29,7 @@ class AuthController extends Controller
             'dob' => $validatedData['dob'],
         ]);
 
-        return Successful(200, trans('api.register_success'));
+        return Successful(200, trans('api.register_success') , $user);
     }
 
 

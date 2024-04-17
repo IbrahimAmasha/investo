@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('sessions', function (Blueprint $table) {
             $table->id();
             $table->dateTime('date');
-            $table->dateTime('time');
-            $table->boolean('is_booked');
+             $table->boolean('is_booked')->default(0);
+             $table->boolean('finished')->default(0);
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->foreignId('mentor_id')->constrained('users')->onDelete('cascade');
             $table->timestamps();

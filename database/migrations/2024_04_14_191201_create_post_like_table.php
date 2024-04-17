@@ -11,12 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('notofications', function (Blueprint $table) {
-            $table->id();
-            $table->string('content');
+        Schema::create('post_like', function (Blueprint $table) {
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->boolean('is_read')->default(false);
-            
+            $table->foreignId('post_id')->constrained()->onDelete('cascade');
+            $table->primary(['user_id','post_id']); // Composite primary key to ensure uniqueness (a user can like a post only once)
             $table->timestamps();
         });
     }
@@ -26,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('notofications');
+        Schema::dropIfExists('post_like');
     }
 };
