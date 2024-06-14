@@ -17,9 +17,9 @@ return new class extends Migration
             $table->string('l_name');
             $table->string('email')->unique();
             $table->string('password');
-            $table->string('national_id');
-            $table->enum('gender', ['male', 'female']);
-            $table->date('dob');
+            $table->string('national_id')->nullable();
+            $table->enum('gender', ['male', 'female'])->nullable();
+            $table->date('dob')->nullable();
             $table->string('bio')->nullable();
             $table->string('image')->nullable();
             $table->timestamp('email_verified_at')->nullable();

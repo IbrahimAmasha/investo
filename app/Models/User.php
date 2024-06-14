@@ -3,12 +3,16 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Models\Comment;
+use App\Models\Notification;
 use App\Models\Post;
+use App\Models\Predict;
+use App\Models\Session;
 use App\Models\UserRelationship;
-use Laravel\Sanctum\HasApiTokens;
-use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
@@ -42,18 +46,28 @@ class User extends Authenticatable
     {
         return $this->hasMany(UserRelationship::class, 'follower_id');
     }
+    //user 4 followed user 1 
+    //user 4 --> follower
+    //user 1 --> followee
+    // user 4's followees --> user 1
+    //user 1's followers -->  user 4 
+
+    public function likedPosts()
+    {
+        return $this->belongsToMany(Post::class,'post_like','user_id','post_id')->withTimestamps();
+    }
+
+     public function posts()
+    {
+        return $this->hasMany(Post::class);
+    }
 
     public function comments()
     {
         return $this->hasMany(Comment::class);
     }
 
-    public function posts()
-    {
-        return $this->hasMany(Post::class);
-    }
-
-    public function notofications()
+    public function notifications()
     {
         return $this->hasMany(Notification::class);
     }
@@ -67,7 +81,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Session::class,'mentor_id');
     }
+  
 
+       
 
     /**
      * The attributes that should be hidden for serialization.
@@ -89,4 +105,20 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+
+
+
+    //accessor function 
+
+    public function userBlock()
+    {
+        $users = User::where('stutas', 0)->get();
+        return $users;
+    }
+
+    public function predict()
+    {
+        return $this->hasMany(Predict::class);
+    }
 }

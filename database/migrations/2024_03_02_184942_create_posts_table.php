@@ -16,6 +16,7 @@ return new class extends Migration
             $table->text('content');
             $table->string('image')->nullable();
             $table->unsignedInteger('likes_count')->default(0); // Count of likes
+            $table->enum('status',['pending','accepted','rejected']);
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });
