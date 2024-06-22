@@ -1,13 +1,12 @@
 <?php
-namespace App\Http\Resources\Api\V1;
 
-use Carbon\Carbon;
-use App\Models\User;
+namespace App\Http\Resources;
+
 use Illuminate\Http\Request;
-use App\Http\Resources\Api\V1\CommentResource;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Carbon\Carbon;
 
-class PostResource extends JsonResource
+class NotificationResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -21,19 +20,17 @@ class PostResource extends JsonResource
 
         // Parse the created_at time
         $createdAt = Carbon::parse($this->created_at);
-        $user = User::find($this->user_id);
-        $comments = CommentResource::collection($this->comments);
 
         return [
-            'post_id' => $this->id,
-            'Post_owner_id' => $this->user_id, // Directly use user_id
-            'user_name' => $this->user->f_name . ' ' . $this->user->l_name, 
-            'user_image' => $this->user->image, 
-            'image' => $this->image,
+            'id' => $this->id,
+            'type' => $this->type,
+            'actor_id' => $this->actor_id,
+            'actor_name' => $this->actor_name,
+            'actor_image' => $this->user->image,
+            'message' => $this->data,
+            'read' => $this->read,
             'created_at' => $this->formatCreatedAt($createdAt), // Formatted date in Arabic
-            'total_likes' => $this->likes_count,
-            'total_comments' => $this->comments->count(), 
-            'comments' =>  $comments, 
+            'updated_at' => $this->updated_at,
         ];
     }
 

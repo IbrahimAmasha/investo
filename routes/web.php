@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\paymentController;
 use Illuminate\Support\Facades\Route;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -16,3 +18,8 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+// Route::get('/',[PaymentController::class,'index']);
+// Route::get('rating',[PaymentController::class,'rating'])->name('rating');
+// Route::post('callback',[PaymentController::class,'callback'])->name('callback');
+

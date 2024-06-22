@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use function App\Helpers\Error;
 use App\Http\Controllers\Controller;
 use function App\Helpers\Successful;
+use Illuminate\Support\Facades\Validator;
 use App\Http\Resources\Api\V1\CommentResource;
 
 class CommentController extends Controller
@@ -81,4 +82,31 @@ class CommentController extends Controller
         return Successful(200, 'Post comments retrieved Successfully', $comments);
 
     }
+
+    public function likeComment($id)
+    {
+        try {
+            // Find the comment by its ID
+            $validator = Validator::make(['id' => $id], [
+                'id' => 'required|integer|exists:comments,id',
+            ]);
+    
+            if ($validator->fails()) {
+                return Error('Invalid comment ID', 400);
+            }
+    
+            $comment = Comment::find($id);
+
+            $comment->likes++;
+            $comment->save();
+    
+            // Return a successful response
+            return Successful(200, 'Comment liked successfully', $comment);
+    
+        } catch (\Exception $e) {
+            // Handle any exceptions
+            return Error('An error occurred while liking the comment. ' . $e->getMessage(), 500);
+        }
+    }
+    
 }

@@ -11,11 +11,17 @@ class Notification extends Model
     use HasFactory;
 
     protected $fillable = [
-        'content',
         'user_id',
-        'is_read',
+        'type',
+        'actor_id',
+        'actor_name',
+        'data',
+        'read',
     ];
 
+    // protected $casts = [
+    //     'data' => 'array', // Automatically cast the data field to an array
+    // ];
 
     public function user()
     {

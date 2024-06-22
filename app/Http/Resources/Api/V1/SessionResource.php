@@ -15,10 +15,10 @@ class SessionResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
+            'id' => $this->id,
             'user_id' => $this->user_id,
-            'mentor_id' => $this->user_id,
+            'mentor_id' => $this->mentor_id,
             'date' => $this->date,
-            'time' => $this->time,
         ];
     }
 }

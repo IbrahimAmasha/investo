@@ -3,10 +3,12 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Models\User;
+use App\Events\UserFollowed;
+
+use App\Models\Notification;
+
 use Illuminate\Http\Request;
-
 use function App\Helpers\Error;
-
 use App\Models\UserRelationship;
 use App\Http\Controllers\Controller;
 use function App\Helpers\Successful;
@@ -37,8 +39,26 @@ class UserRelationshipController extends Controller
 
     $user_relationship->save();
 
+    $follower = User::find($follower_id);
+    $follower_name = $follower->f_name . ' ' . $follower->l_name;
+    // Create a  notification
+    Notification::create([
+      'user_id' => $followee_id,
+      'type' => 'follow',
+      'actor_id' => $follower_id,
+      'actor_name' => $follower_name,
+      'data' =>   ' .قام بمتابعتك '   . $follower_name
+
+    ]);
+
+    // Fire the event
+    event(new UserFollowed($follower_id, $follower_name, $followee_id));
+
     return Successful(201, 'You Followed This User');
   }
+
+
+
 
   public function unfollow($followee_id)
   {
@@ -57,8 +77,7 @@ class UserRelationshipController extends Controller
     UserRelationship::where('followee_id', $followee_id)
       ->where('follower_id', $follower_id)
       ->delete();
-      return Successful(201, 'You Unfollowed This User');
-
+    return Successful(201, 'You Unfollowed This User');
   }
 
   public function userFollowees($user_id)

@@ -11,13 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('notifications', function (Blueprint $table) {
-            $table->id();
-            $table->string('content');
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->boolean('is_read')->default(false);
-            
-            $table->timestamps();
+        Schema::table('notifications', function (Blueprint $table) {
+            // Set the character set and collation
+            $table->charset = 'utf8mb4';
+            $table->collation = 'utf8mb4_unicode_ci';
         });
     }
 
@@ -26,6 +23,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('notifications');
+        Schema::table('notifications', function (Blueprint $table) {
+            //
+        });
     }
 };
