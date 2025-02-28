@@ -16,7 +16,3 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
-// 1- new change 
-// 2- new change 
-// 3- added from github
-// 4- from github
